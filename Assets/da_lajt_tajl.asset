@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: da_lajt_tajl
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 36d4173b70da1e343828c4bfb7a63311, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f8632486c971976469c51bad44fe0952, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
