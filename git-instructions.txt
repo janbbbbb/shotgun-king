@@ -1,13 +1,21 @@
+1.Clone the repository to your desktop:
+git clone https://github.com/janbbbbb/shotgun-king.git /c/Users/uczen/Desktop/shotgun-king
+
+2.Enter the repository folder:
 cd /c/Users/uczen/Desktop/shotgun-king
 
+3.Rename the branch to main:
 git branch -m main
 
+4.Stage all changes:
 git add .
 
+5.Commit the changes:
 git commit -m "opis commita"
 
+6.Push to GitHub:
 git push origin main
-LUB (jesli nie masz problemu z NADPISANIEM CALEGO REPOZYTORIOUM)
+OR, if you want to overwrite the remote completely:
 git push -f origin main
 
 
