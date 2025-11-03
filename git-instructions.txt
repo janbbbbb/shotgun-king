@@ -1,0 +1,13 @@
+cd /c/Users/uczen/Desktop/shotgun-king
+
+git branch -m main
+
+git add .
+
+git commit -m "opis commita"
+
+git push origin main
+LUB (jesli nie masz problemu z NADPISANIEM CALEGO REPOZYTORIOUM)
+git push -f origin main
+
+
