@@ -8,6 +8,18 @@ public class BoardManager : MonoBehaviour
     // Słownik: klucz = obiekt (GameObject) figury, wartość = jej pozycja na planszy
     private Dictionary<GameObject, Vector3> piecePositions = new Dictionary<GameObject, Vector3>();
 
+    public List<Vector3> GetAllPiecesWorldPositions()
+    {
+        // TODO: return list of positions of all pieces on the board
+        return new List<Vector3>();
+    }
+
+    public GameObject GetPieceByName(string name)
+    {
+        // TODO: return a specific piece by its name
+        return null;
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -80,8 +92,8 @@ public class BoardManager : MonoBehaviour
             Vector3 pos = kvp.Value;
 
             // przeliczamy współrzędne (środek to 0,0 → plansza 8x8 od -3.5 do 3.5)
-            int gridX = Mathf.RoundToInt(pos.x + 3.5f);
-            int gridZ = Mathf.RoundToInt(pos.z + 3.5f);
+            int gridX = Mathf.RoundToInt(3.5f - pos.x);  // 🔁 odwrócone X
+            int gridZ = Mathf.RoundToInt(3.5f + pos.z);
 
             char symbol = '0';
 
@@ -112,4 +124,28 @@ public class BoardManager : MonoBehaviour
 
         Debug.Log(output);
     }
+
+    public void ClearBoard()
+    {
+        // Destroy all pieces from the board
+        foreach (var kvp in piecePositions)
+        {
+            if (kvp.Key != null)
+                Destroy(kvp.Key);
+        }
+
+        piecePositions.Clear();
+        Debug.Log("Plansza wyczyszczona.");
+    }
+
+    public void SpawnPiece(GameObject prefab, Vector2Int boardPosition)
+    {
+        float offset = 3.5f;
+        Vector3 worldPos = new Vector3(-offset + boardPosition.x, 0, -offset + boardPosition.y);
+
+        // use prefab’s original rotation instead of forcing one
+        GameObject piece = Instantiate(prefab, worldPos, prefab.transform.rotation);
+        RegisterPiece(piece);
+    }
+
 }
