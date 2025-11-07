@@ -8,13 +8,14 @@ public class LevelManager : MonoBehaviour
     [Header("Prefabs")]
     public GameObject playerPrefab;
     public GameObject kingPrefab;
+    public GameObject queenPrefab;
     public GameObject pawnPrefab;
     public GameObject bishopPrefab;
     public GameObject knightPrefab;
     public GameObject rookPrefab;
 
     private int currentLevel = 1;
-    private const int maxLevel = 3;
+    private const int maxLevel = 12;
 
     private void Awake()
     {
@@ -45,51 +46,164 @@ public class LevelManager : MonoBehaviour
         Debug.Log($"=== Loading Level {levelIndex} ===");
         BoardManager.Instance.ClearBoard();
 
-        // remove all old pieces from scene
         foreach (var piece in GameObject.FindGameObjectsWithTag("Piece"))
             Destroy(piece);
 
         switch (levelIndex)
         {
             case 1:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 7));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 6));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 0));
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 1));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
                 break;
 
             case 2:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 7));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 6));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 5));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 5));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 6));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 0));
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 1));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
                 break;
 
             case 3:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 7));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 6));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 5));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 7));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 5));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 6));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 6));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 0));
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 4:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 5:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(2, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 6:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(bishopPrefab, new Vector2Int(5, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 7:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(2, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 8:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 9:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 10:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(2, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 11:
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
+                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                SpawnPiece(pawnPrefab, new Vector2Int(0, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(2, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(3, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(4, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPiece(pawnPrefab, new Vector2Int(7, 2));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                break;
+
+            case 12:
+                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
+                SpawnPiece(knightPrefab, new Vector2Int(1, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(2, 0));
+                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
+                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
+                SpawnPiece(bishopPrefab, new Vector2Int(5, 0));
+                SpawnPiece(knightPrefab, new Vector2Int(6, 0));
+                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                for (int i = 0; i < 8; i++)
+                    SpawnPiece(pawnPrefab, new Vector2Int(i, 1));
+                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
                 break;
         }
     }
 
-    private void SpawnPiece(GameObject prefab, Vector2Int boardPos)
+
+        private void SpawnPiece(GameObject prefab, Vector2Int boardPos)
     {
         Vector3 worldPos = new Vector3(boardPos.x - 3.5f, 0, boardPos.y - 3.5f);
-        var piece = Instantiate(prefab, worldPos, Quaternion.identity);
+        GameObject piece = Instantiate(prefab, worldPos, Quaternion.Euler(90f, 180f, 0f));
         piece.tag = "Piece";
         BoardManager.Instance.RegisterPiece(piece);
     }
+
 }

@@ -1087,6 +1087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 2389101388425524946, guid: 22836b70c2d099540b91f25793c92d99, type: 3}
   kingPrefab: {fileID: 5653111504686863555, guid: 656f924b17e413149a04e704f52b1369, type: 3}
+  queenPrefab: {fileID: 6442394403735195541, guid: 18374f31b2ef46a43bf37bd0250563a3, type: 3}
   pawnPrefab: {fileID: 4092313731248553331, guid: 31a7bb08ddaa3cd4193010ee50dbb955, type: 3}
   bishopPrefab: {fileID: 7593650938037021180, guid: 50381892623d6ed45868ef2b168e38d4, type: 3}
   knightPrefab: {fileID: 3742600108308347728, guid: 995da17a977cd1648943fe834c714345, type: 3}

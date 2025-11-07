@@ -137,15 +137,4 @@ public class BoardManager : MonoBehaviour
         piecePositions.Clear();
         Debug.Log("Plansza wyczyszczona.");
     }
-
-    public void SpawnPiece(GameObject prefab, Vector2Int boardPosition)
-    {
-        float offset = 3.5f;
-        Vector3 worldPos = new Vector3(-offset + boardPosition.x, 0, -offset + boardPosition.y);
-
-        // use prefab’s original rotation instead of forcing one
-        GameObject piece = Instantiate(prefab, worldPos, prefab.transform.rotation);
-        RegisterPiece(piece);
-    }
-
 }
