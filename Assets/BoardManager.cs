@@ -99,6 +99,7 @@ public class BoardManager : MonoBehaviour
 
             string name = kvp.Key.name.ToLower();
             if (name.Contains("player")) symbol = 'P';
+            else if (name.Contains("pawn")) symbol = 'A';
             else if (name.Contains("king")) symbol = 'K';
             else if (name.Contains("queen")) symbol = 'Q';
             else if (name.Contains("rook")) symbol = 'R';
