@@ -162,5 +162,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  bulletPrefab: {fileID: 3087434852765567507, guid: 2c3d1b37a9e11ee468b0a2de9c3f04bf, type: 3}
-  bulletSpeed: 20
+  pelletPrefab: {fileID: 3087434852765567507, guid: 2c3d1b37a9e11ee468b0a2de9c3f04bf, type: 3}
+  pelletSprites:
+  - {fileID: 21300000, guid: 8edd4ed0519ad8f40bec39360adfbbb7, type: 3}
+  - {fileID: 21300000, guid: 16beffa29eea99e45925a439559f2f07, type: 3}
+  - {fileID: 21300000, guid: 1804446554a952243a393f2d418977cd, type: 3}
+  pelletsPerShot: 5
+  spreadAngle: 12
+  pelletSpeed: 16

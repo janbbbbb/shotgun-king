@@ -1,12 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
 {
     public Camera cam;
-    public GameObject bulletPrefab;
-    public float bulletSpeed = 20f;
+
+    public GameObject pelletPrefab;
+
+    public Sprite[] pelletSprites;
+
+    public int pelletsPerShot = 1;
+    public float spreadAngle = 12f;
+    public float pelletSpeed = 15f;
 
     void Start()
     {
@@ -29,17 +34,35 @@ public class PlayerShooting : MonoBehaviour
         plane.Raycast(ray, out float distance);
 
         Vector3 targetPoint = ray.GetPoint(distance);
-        Vector3 dir = (targetPoint - spawnPos).normalized;
+        Vector3 forwardDir = (targetPoint - spawnPos).normalized;
 
-        Quaternion look = Quaternion.LookRotation(dir);
-        Quaternion finalRotation = look * Quaternion.Euler(90f, 0f, 0f);
+        for (int i = 0; i < pelletsPerShot; i++)
+        {
+            // Apply random shotgun spread
+            Vector3 randomDir =
+                Quaternion.Euler(
+                    Random.Range(-spreadAngle, spreadAngle),
+                    Random.Range(-spreadAngle, spreadAngle),
+                    0
+                ) * forwardDir;
 
-        GameObject bullet = Instantiate(bulletPrefab, spawnPos, finalRotation);
+            // Correct for 2D sprites in 3D (facing top-down)
+            Quaternion rot = Quaternion.LookRotation(randomDir) * Quaternion.Euler(90, 0, 0);
 
-        bullet.transform.localScale = new Vector3(0.4f, 0.4f);
+            // Spawn pellet
+            GameObject pellet = Instantiate(pelletPrefab, spawnPos, rot);
 
-        bullet.GetComponent<Rigidbody>().velocity = dir * bulletSpeed;
+            // Give movement
+            pellet.GetComponent<Rigidbody>().velocity = randomDir * pelletSpeed;
+
+            // Random sprite
+            SpriteRenderer sr = pellet.GetComponent<SpriteRenderer>();
+            sr.sprite = pelletSprites[Random.Range(0, pelletSprites.Length)];
+
+            pellet.transform.localScale *= 0.7f;
+
+            // Destroy after a short time
+            Destroy(pellet, 1.5f);
+        }
     }
 }
-
-
