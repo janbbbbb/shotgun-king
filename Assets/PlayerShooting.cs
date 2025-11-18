@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerShooting : MonoBehaviour
@@ -7,11 +8,14 @@ public class PlayerShooting : MonoBehaviour
 
     public GameObject pelletPrefab;
 
+    public GameObject pelletExplodePrefab;
+
     public Sprite[] pelletSprites;
 
-    public int pelletsPerShot = 1;
+    public int pelletsPerShot = 10;
     public float spreadAngle = 12f;
     public float pelletSpeed = 15f;
+    public float range = 15f;
 
     void Start()
     {
@@ -36,9 +40,23 @@ public class PlayerShooting : MonoBehaviour
         Vector3 targetPoint = ray.GetPoint(distance);
         Vector3 forwardDir = (targetPoint - spawnPos).normalized;
 
+        List<int> pelletIndices = new List<int>();
         for (int i = 0; i < pelletsPerShot; i++)
         {
-            // Apply random shotgun spread
+            pelletIndices.Add(i);
+        }
+
+        for (int i = 0; i < pelletIndices.Count; i++)
+        {
+            int temp = pelletIndices[i];
+            int randomIndex = Random.Range(i, pelletIndices.Count);
+            pelletIndices[i] = pelletIndices[randomIndex];
+            pelletIndices[randomIndex] = temp;
+        }
+
+
+        for (int i = 0; i < pelletsPerShot; i++)
+        {
             Vector3 randomDir =
                 Quaternion.Euler(
                     Random.Range(-spreadAngle, spreadAngle),
@@ -46,23 +64,40 @@ public class PlayerShooting : MonoBehaviour
                     0
                 ) * forwardDir;
 
-            // Correct for 2D sprites in 3D (facing top-down)
             Quaternion rot = Quaternion.LookRotation(randomDir) * Quaternion.Euler(90, 0, 0);
 
-            // Spawn pellet
             GameObject pellet = Instantiate(pelletPrefab, spawnPos, rot);
 
-            // Give movement
             pellet.GetComponent<Rigidbody>().velocity = randomDir * pelletSpeed;
 
-            // Random sprite
             SpriteRenderer sr = pellet.GetComponent<SpriteRenderer>();
             sr.sprite = pelletSprites[Random.Range(0, pelletSprites.Length)];
 
             pellet.transform.localScale *= 0.7f;
 
-            // Destroy after a short time
-            Destroy(pellet, 1.5f);
+            float destroyDistance;
+            int pelletIndex = pelletIndices[i];
+
+            if (pelletIndex < pelletsPerShot / 3)
+            {
+                destroyDistance = Random.Range(range * 0.25f, range * 0.4f);
+            }
+            else if (pelletIndex < pelletsPerShot * 2 / 3)
+            {
+                destroyDistance = Random.Range(range * 0.55f, range * 0.75f);
+            }
+            else
+            {
+                destroyDistance = Random.Range(range * 0.9f, range);
+            }
+
+            float pelletLifetime = destroyDistance / pelletSpeed;
+
+            PelletManager controller = pellet.GetComponent<PelletManager>();
+            if (controller != null)
+            {
+                controller.Initialize(pelletLifetime, pelletExplodePrefab);
+            }
         }
     }
 }
