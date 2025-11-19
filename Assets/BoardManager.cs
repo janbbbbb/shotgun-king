@@ -10,13 +10,18 @@ public class BoardManager : MonoBehaviour
 
     public List<Vector3> GetAllPiecesWorldPositions()
     {
-        // TODO: return list of positions of all pieces on the board
-        return new List<Vector3>();
+        return new List<Vector3>(piecePositions.Values);
     }
 
     public GameObject GetPieceByName(string name)
     {
-        // TODO: return a specific piece by its name
+        foreach (var kvp in piecePositions)
+        {
+            if (kvp.Key.name == name)
+                return kvp.Key;
+        }
+
+        // jeśli nie znaleziono, zwracamy null
         return null;
     }
 

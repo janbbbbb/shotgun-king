@@ -3,10 +3,7 @@ guid: ac0b4c160e7623c48a0dae3657bebfa4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - cam: {instanceID: 0}
-  - pelletPrefab: {fileID: 3087434852765567507, guid: 2c3d1b37a9e11ee468b0a2de9c3f04bf, type: 3}
-  - pelletExplodePrefab: {fileID: 422276301829339884, guid: 9a74b102589b81c4b96905550f2e23ff, type: 3}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
