@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +26,7 @@ public class KingMovement : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.isKinematic = true; // sterujemy ruchem rêcznie
+        rb.isKinematic = true; // sterujemy ruchem rï¿½cznie
         targetPosition = transform.position;
         globalOldPosition = transform.position;
         globalNewPosition = transform.position;
@@ -40,7 +40,7 @@ public class KingMovement : MonoBehaviour
     {
         Vector3 current = transform.position;
         List<Vector3> occupiedPositions = BoardManager.Instance.GetAllPiecesWorldPositions();
-        // tymczasowa tablica o maksymalnym mo¿liwym rozmiarze
+        // tymczasowa tablica o maksymalnym moï¿½liwym rozmiarze
         Vector3[] temp = new Vector3[offsets.Length];
         int count = 0;
 
@@ -48,10 +48,10 @@ public class KingMovement : MonoBehaviour
         {
             Vector3 target = current + offsets[i];
 
-            // zakres planszy (8×8, centrum w 0,0 -> 3.5f)
+            // zakres planszy (8ï¿½8, centrum w 0,0 -> 3.5f)
             if (Mathf.Abs(target.x) <= 3.5f && Mathf.Abs(target.z) <= 3.5f)
             {
-                // sprawdzamy czy pole nie jest zajête
+                // sprawdzamy czy pole nie jest zajï¿½te
                 if (!Physics.CheckBox(target, Vector3.one * 0.4f))
                 {
                     bool isOccupied = occupiedPositions.Contains(target);
@@ -61,11 +61,11 @@ public class KingMovement : MonoBehaviour
             }
         }
 
-        // je¿eli wszystkie miejsca zosta³y u¿yte, zwracamy temp bez kopiowania
+        // jeï¿½eli wszystkie miejsca zostaï¿½y uï¿½yte, zwracamy temp bez kopiowania
         if (count == offsets.Length)
             return temp;
 
-        // inaczej kopiujemy tylko u¿yte elementy do tablicy o w³aœciwym rozmiarze
+        // inaczej kopiujemy tylko uï¿½yte elementy do tablicy o wï¿½aï¿½ciwym rozmiarze
         Vector3[] result = new Vector3[count];
         System.Array.Copy(temp, result, count);
         return result;
@@ -97,7 +97,7 @@ public class KingMovement : MonoBehaviour
         {
             float distance = Vector3.Distance(possibleMoves[i], playerPosition);
 
-            // odejmujemy wartoœæ dystansu od punktów (bli¿ej = lepiej)
+            // odejmujemy wartoï¿½ï¿½ dystansu od punktï¿½w (bliï¿½ej = lepiej)
             points[i] = -Mathf.RoundToInt(distance);
 
             // sprawdzamy, czy ruch daje szacha przeciwnikowi
@@ -107,7 +107,7 @@ public class KingMovement : MonoBehaviour
             }
         }
 
-        // wybieramy ruch z najwy¿sz¹ punktacj¹
+        // wybieramy ruch z najwyï¿½szï¿½ punktacjï¿½
         int bestIndex = 0;
         for (int i = 1; i < points.Length; i++)
         {
@@ -118,15 +118,15 @@ public class KingMovement : MonoBehaviour
         return possibleMoves[bestIndex];
     }
 
-    // Przyk³adowa metoda sprawdzaj¹ca szacha
+    // Przykï¿½adowa metoda sprawdzajï¿½ca szacha
     private bool IsCheck(Vector3 position)
     {
-        // TODO: dodaj logikê sprawdzania czy ruch na 'position' powoduje szacha
-        // Na razie zwraca false dla przyk³adu
+        // TODO: dodaj logikï¿½ sprawdzania czy ruch na 'position' powoduje szacha
+        // Na razie zwraca false dla przykï¿½adu
         return false;
     }
 
-    // ta funkcja zostanie wywo³ana automatycznie po ka¿dej zmianie tury
+    // ta funkcja zostanie wywoï¿½ana automatycznie po kaï¿½dej zmianie tury
     private void HandleTurnChange()
     {
         Vector3[] moves = GenerateMoves(KingOffsets);
@@ -135,7 +135,7 @@ public class KingMovement : MonoBehaviour
     }
     public void PrintMoves(Vector3[] possible)
     {
-        Debug.Log("Ruchy króla/figury:");
+        Debug.Log("Ruchy krï¿½la/figury:");
 
         foreach (var move in possible)
         {
