@@ -82,7 +82,7 @@ public class KingMovement : MonoBehaviour
     private Vector3 SelectMove(Vector3[] possibleMoves)
     {
         // pobranie obiektu gracza
-        GameObject playerObject = BoardManager.Instance.GetPieceByName("Player");
+        GameObject playerObject = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
         if (playerObject == null)
         {
             Debug.LogWarning("Nie znaleziono gracza!");
@@ -97,7 +97,7 @@ public class KingMovement : MonoBehaviour
         {
             float distance = Vector3.Distance(possibleMoves[i], playerPosition);
 
-            // odejmujemy warto�� dystansu od punkt�w (bli�ej = lepiej)
+            // odejmujemy wartosc dystansu od punkt�w (bli�ej = lepiej)
             points[i] = -Mathf.RoundToInt(distance);
 
             // sprawdzamy, czy ruch daje szacha przeciwnikowi
@@ -135,7 +135,7 @@ public class KingMovement : MonoBehaviour
     }
     public void PrintMoves(Vector3[] possible)
     {
-        Debug.Log("Ruchy kr�la/figury:");
+        Debug.Log("Ruchy krola/figury:");
 
         foreach (var move in possible)
         {
