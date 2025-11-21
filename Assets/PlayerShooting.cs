@@ -17,6 +17,10 @@ public class PlayerShooting : MonoBehaviour
     public float pelletSpeed = 15f;
     public float range = 15f;
 
+    public int maxAmmo = 6;       // one full shotgun load
+    public int currentAmmo = 6;   // start full
+    public bool isReloading = false;
+
     void Start()
     {
         if (cam == null)
@@ -27,10 +31,23 @@ public class PlayerShooting : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
             Shoot();
+
+        if (Input.GetKeyDown(KeyCode.R))
+            Reload();
     }
 
     void Shoot()
     {
+        if (currentAmmo <= 0)
+        {
+            Debug.Log("Out of ammo! Must reload.");
+            return;
+        }
+
+        currentAmmo--;
+
+        Debug.Log("Shot fired. Ammo left: " + currentAmmo);
+
         Vector3 spawnPos = transform.position;
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -99,5 +116,19 @@ public class PlayerShooting : MonoBehaviour
                 controller.Initialize(pelletLifetime, pelletExplodePrefab);
             }
         }
+    }
+
+    public void Reload()
+    {
+        if (isReloading) return;
+
+        isReloading = true;
+        Debug.Log("Reloading...");
+
+        // full reload after delay (turn-based, so instant is also fine)
+        currentAmmo = maxAmmo;
+        isReloading = false;
+
+        Debug.Log("Reload complete. Ammo: " + currentAmmo);
     }
 }
