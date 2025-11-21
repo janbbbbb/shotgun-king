@@ -70,6 +70,7 @@ public class KingMovement : MonoBehaviour
         System.Array.Copy(temp, result, count);
         return result;
     }
+    
     private void OnEnable()
     {
         GameManager.OnTurnChanged += HandleTurnChange;
@@ -131,7 +132,10 @@ public class KingMovement : MonoBehaviour
     {
         Vector3[] moves = GenerateMoves(KingOffsets);
         PrintMoves(moves);
+        Debug.Log("Najlepszy ruch to:");
         Debug.Log(SelectMove(moves));
+        Move(SelectMove(moves));
+
     }
     public void PrintMoves(Vector3[] possible)
     {
@@ -141,5 +145,8 @@ public class KingMovement : MonoBehaviour
         {
             Debug.Log(move);
         }
+    }
+    public void Move(Vector3 move) {
+        transform.position = move;
     }
 }
