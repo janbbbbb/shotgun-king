@@ -198,12 +198,13 @@ public class LevelManager : MonoBehaviour
     }
 
 
-        private void SpawnPiece(GameObject prefab, Vector2Int boardPos)
+    private GameObject SpawnPiece(GameObject prefab, Vector2Int boardPos)
     {
         Vector3 worldPos = new Vector3(boardPos.x - 3.5f, 0, boardPos.y - 3.5f);
         GameObject piece = Instantiate(prefab, worldPos, Quaternion.Euler(90f, 180f, 0f));
         piece.tag = "Piece";
         BoardManager.Instance.RegisterPiece(piece);
+        return piece;
     }
 
 }
