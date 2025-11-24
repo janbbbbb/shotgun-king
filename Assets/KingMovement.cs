@@ -5,6 +5,7 @@ using UnityEngine;
 public class KingMovement : MonoBehaviour
 {
     private GameObject playerObject;
+    private GameObject kingPrefab;
     private Vector3 playerPosition;
     private static readonly Vector3[] KingOffsets = new Vector3[]
 {
@@ -147,6 +148,8 @@ public class KingMovement : MonoBehaviour
         }
     }
     public void Move(Vector3 move) {
+       GameObject kingObject = BoardManager.Instance.GetPieceByName("kingPrefab(Clone)");
         transform.position = move;
+        BoardManager.Instance.UpdatePiecePosition(kingObject, move);
     }
 }
