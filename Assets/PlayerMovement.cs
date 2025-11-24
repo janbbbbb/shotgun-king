@@ -59,6 +59,13 @@ public class PlayerMovement : MonoBehaviour
             // sprawdzamy zakres planszy
             if (Mathf.Abs(newTarget.x) <= 3.5f && Mathf.Abs(newTarget.z) <= 3.5f)
             {
+                List<Vector3> occupied = BoardManager.Instance.GetAllPiecesWorldPositions();
+                if (occupied.Contains(newTarget))
+                {
+                    if (pressDown == true)
+                        Debug.Log("Pole zajête (BoardManager)!");
+                    return;
+                }
                 // sprawdzamy kolizjê
                 if (!Physics.CheckBox(newTarget, Vector3.one * 0.4f))
                 {
@@ -77,6 +84,7 @@ public class PlayerMovement : MonoBehaviour
                 {
                     if (pressDown == true)
                     Debug.Log("Pole zajête!");
+
                 }
             }
         }
