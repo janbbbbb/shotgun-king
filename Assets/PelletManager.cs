@@ -23,19 +23,26 @@ public class PelletManager : MonoBehaviour
         TriggerImpactEffect();
     }
 
-    // Called when pellet collides with something
     private void OnCollisionEnter(Collision collision)
     {
-        if (hasHit) return; // prevent double triggers
+        if (hasHit) return;
         hasHit = true;
 
         // Ignore the player
         if (!collision.gameObject.CompareTag("Player"))
         {
-            Vector3 impactPoint = collision.contacts[0].point;
-            TriggerImpactEffect(impactPoint);
+            // Try to find EnemyHealth on the object or parent
+            EnemyHealth health = collision.gameObject.GetComponentInParent<EnemyHealth>();
+            if (health != null)
+            {
+                health.TakeDamage(1);  // or the amount per pellet
+            }
+
+            TriggerImpactEffect();
         }
     }
+
+
 
     // Spawns the impact effect and destroys the pellet
     private void TriggerImpactEffect(Vector3? position = null)

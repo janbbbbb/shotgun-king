@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -5957057356785808574}
   - component: {fileID: 4237345786369064092}
   - component: {fileID: -7726835794238251239}
+  - component: {fileID: -3357688510879691649}
   m_Layer: 3
   m_Name: knightPrefab
   m_TagString: Piece
@@ -147,3 +148,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.6, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3357688510879691649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3742600108308347728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9adc487926198499d8c53f4d338573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 5
+  hitAnimPrefab: {fileID: 8447344051945299319, guid: 2c9598994e420e14ba7bc663a0cbff34, type: 3}

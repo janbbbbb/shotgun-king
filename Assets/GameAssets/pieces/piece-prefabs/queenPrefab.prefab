@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: -9075446568779136846}
   - component: {fileID: 3817888403425637286}
   - component: {fileID: -1851775368280614972}
+  - component: {fileID: -1977516278164180829}
   m_Layer: 3
   m_Name: queenPrefab
   m_TagString: Piece
@@ -147,3 +148,17 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.65, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1977516278164180829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6442394403735195541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9adc487926198499d8c53f4d338573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 8
+  hitAnimPrefab: {fileID: 8447344051945299319, guid: 2c9598994e420e14ba7bc663a0cbff34, type: 3}
