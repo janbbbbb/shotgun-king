@@ -32,6 +32,8 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        BoardManager.Instance.RemovePiece(gameObject);
+
         Destroy(gameObject);
     }
 }

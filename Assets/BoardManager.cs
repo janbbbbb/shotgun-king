@@ -43,6 +43,15 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    public void RemovePiece(GameObject piece)
+    {
+        if (piecePositions.ContainsKey(piece))
+        {
+            piecePositions.Remove(piece);
+            Debug.Log($"Usunięto figurę z BoardManager: {piece.name}");
+        }
+    }
+
     // Aktualizacja pozycji po ruchu
     public void UpdatePiecePosition(GameObject piece, Vector3 newPos)
     {
