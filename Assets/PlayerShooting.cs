@@ -38,6 +38,9 @@ public class PlayerShooting : MonoBehaviour
 
     void Shoot()
     {
+
+        GameManager.Instance.NextTurn();
+
         if (currentAmmo <= 0)
         {
             Debug.Log("Out of ammo! Must reload.");
@@ -115,6 +118,8 @@ public class PlayerShooting : MonoBehaviour
 
     public void Reload()
     {
+        GameManager.Instance.NextTurn();
+
         if (isReloading) return;
 
         isReloading = true;

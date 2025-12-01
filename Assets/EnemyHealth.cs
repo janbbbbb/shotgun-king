@@ -32,8 +32,55 @@ public class EnemyHealth : MonoBehaviour
 
     private void Die()
     {
+        // Remove from board logic
         BoardManager.Instance.RemovePiece(gameObject);
+
+        // Disable enemy logic
+        Collider col = GetComponent<Collider>();
+        if (col) col.enabled = false;
+
+        MonoBehaviour[] scripts = GetComponents<MonoBehaviour>();
+        foreach (var s in scripts)
+            if (s != this) s.enabled = false;
+
+        // Start fade
+        StartCoroutine(FadeAndDestroy());
+    }
+
+    private IEnumerator FadeAndDestroy()
+    {
+        float duration = 0.5f;   // fade time
+        float t = 0;
+
+        // Collect all renderers (MeshRenderer / SpriteRenderer)
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+
+        // Save original colors
+        List<Material> mats = new List<Material>();
+        foreach (Renderer r in renderers)
+            mats.AddRange(r.materials); // handles multiple meshes
+
+        // Fade loop
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            float alpha = 1f - (t / duration);
+
+            foreach (Material m in mats)
+            {
+                if (m.HasProperty("_Color"))
+                {
+                    Color c = m.color;
+                    c.a = alpha;
+                    m.color = c;
+                }
+            }
+
+            yield return null;
+        }
 
         Destroy(gameObject);
     }
+
+
 }
