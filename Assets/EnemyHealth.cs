@@ -8,30 +8,31 @@ public class EnemyHealth : MonoBehaviour
     private int currentHealth;
     public GameObject hitAnimPrefab;
 
+    public event System.Action<EnemyHealth> OnDeath;
+
     void Start()
     {
         currentHealth = maxHealth;
     }
 
-    // Called by pellet on hit
     public void TakeDamage(int amount)
     {
         currentHealth -= amount;
 
-        Vector3 spawnPos = transform.position + Vector3.up * 0.5f; // raise it a bit above the enemy
-        Quaternion spawnRot = Quaternion.Euler(90f, 0f, 0f);       // rotate so sprite faces camera
+        Vector3 spawnPos = transform.position + Vector3.up * 0.5f;
+        Quaternion spawnRot = Quaternion.Euler(90f, 0f, 0f);
 
         Instantiate(hitAnimPrefab, spawnPos, spawnRot);
 
-
         if (currentHealth <= 0)
-        {
             Die();
-        }
     }
 
     private void Die()
     {
+        // Notify LevelManager
+        OnDeath?.Invoke(this);
+
         // Remove from board logic
         BoardManager.Instance.RemovePiece(gameObject);
 
@@ -43,24 +44,21 @@ public class EnemyHealth : MonoBehaviour
         foreach (var s in scripts)
             if (s != this) s.enabled = false;
 
-        // Start fade
+        // Start fade-out
         StartCoroutine(FadeAndDestroy());
     }
 
+
     private IEnumerator FadeAndDestroy()
     {
-        float duration = 0.5f;   // fade time
+        float duration = 0.5f;
         float t = 0;
 
-        // Collect all renderers (MeshRenderer / SpriteRenderer)
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
-
-        // Save original colors
         List<Material> mats = new List<Material>();
         foreach (Renderer r in renderers)
-            mats.AddRange(r.materials); // handles multiple meshes
+            mats.AddRange(r.materials);
 
-        // Fade loop
         while (t < duration)
         {
             t += Time.deltaTime;
@@ -81,6 +79,4 @@ public class EnemyHealth : MonoBehaviour
 
         Destroy(gameObject);
     }
-
-
 }

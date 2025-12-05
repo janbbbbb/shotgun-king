@@ -17,6 +17,9 @@ public class LevelManager : MonoBehaviour
     private int currentLevel = 1;
     private const int maxLevel = 12;
 
+    // Track enemies alive in this level
+    private List<EnemyHealth> aliveEnemies = new List<EnemyHealth>();
+
     private void Awake()
     {
         if (Instance == null)
@@ -30,173 +33,200 @@ public class LevelManager : MonoBehaviour
 
     private void Update()
     {
-        // Press N to go to the next level
         if (Input.GetKeyDown(KeyCode.N))
-        {
-            currentLevel++;
-            if (currentLevel > maxLevel)
-                currentLevel = 1;
+            NextLevel();
+    }
 
-            LoadLevel(currentLevel);
-        }
+    private void NextLevel()
+    {
+        currentLevel++;
+        if (currentLevel > maxLevel)
+            currentLevel = 1;
+
+        LoadLevel(currentLevel);
     }
 
     public void LoadLevel(int levelIndex)
     {
         Debug.Log($"=== Loading Level {levelIndex} ===");
+
+        // Clear lists
+        aliveEnemies.Clear();
+
+        // Clear board
         BoardManager.Instance.ClearBoard();
 
+        // Destroy old pieces
         foreach (var piece in GameObject.FindGameObjectsWithTag("Piece"))
             Destroy(piece);
 
+        // Load level layout
         switch (levelIndex)
         {
             case 1:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 1));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 1));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 2:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 1));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 1));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 3:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 4:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 5:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(pawnPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 6:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(bishopPrefab, new Vector2Int(5, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(bishopPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 7:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 8:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(7, 0));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 9:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 1));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(7, 0));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(6, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(1, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 10:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(7, 0));
+                SpawnEnemy(pawnPrefab, new Vector2Int(1, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(2, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(3, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(4, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
+                SpawnEnemy(pawnPrefab, new Vector2Int(6, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 11:
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 1));
-                SpawnPiece(knightPrefab, new Vector2Int(5, 1));
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
-                SpawnPiece(pawnPrefab, new Vector2Int(0, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(1, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(2, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(3, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(4, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(5, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(6, 2));
-                SpawnPiece(pawnPrefab, new Vector2Int(7, 2));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
+                SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(7, 0));
+                for (int i = 0; i < 8; i++)
+                    SpawnEnemy(pawnPrefab, new Vector2Int(i, 2));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
 
             case 12:
-                SpawnPiece(rookPrefab, new Vector2Int(0, 0));
-                SpawnPiece(knightPrefab, new Vector2Int(1, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(2, 0));
-                SpawnPiece(queenPrefab, new Vector2Int(3, 0));
-                SpawnPiece(kingPrefab, new Vector2Int(4, 0));
-                SpawnPiece(bishopPrefab, new Vector2Int(5, 0));
-                SpawnPiece(knightPrefab, new Vector2Int(6, 0));
-                SpawnPiece(rookPrefab, new Vector2Int(7, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
+                SpawnEnemy(knightPrefab, new Vector2Int(1, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(2, 0));
+                SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
+                SpawnEnemy(kingPrefab, new Vector2Int(4, 0));
+                SpawnEnemy(bishopPrefab, new Vector2Int(5, 0));
+                SpawnEnemy(knightPrefab, new Vector2Int(6, 0));
+                SpawnEnemy(rookPrefab, new Vector2Int(7, 0));
                 for (int i = 0; i < 8; i++)
-                    SpawnPiece(pawnPrefab, new Vector2Int(i, 1));
-                SpawnPiece(playerPrefab, new Vector2Int(4, 7));
+                    SpawnEnemy(pawnPrefab, new Vector2Int(i, 1));
+                SpawnPlayer(new Vector2Int(4, 7));
                 break;
         }
     }
 
+    private void SpawnPlayer(Vector2Int pos)
+    {
+        SpawnPiece(playerPrefab, pos);
+    }
+
+    private void SpawnEnemy(GameObject prefab, Vector2Int pos)
+    {
+        GameObject obj = SpawnPiece(prefab, pos);
+
+        EnemyHealth eh = obj.GetComponent<EnemyHealth>();
+        if (eh != null)
+        {
+            aliveEnemies.Add(eh);
+
+            // Correct signature: (EnemyHealth enemy)
+            eh.OnDeath += (enemy) =>
+            {
+                aliveEnemies.Remove(enemy);
+
+                if (aliveEnemies.Count == 0)
+                    NextLevel();
+            };
+        }
+    }
 
     private GameObject SpawnPiece(GameObject prefab, Vector2Int boardPos)
     {
@@ -206,5 +236,4 @@ public class LevelManager : MonoBehaviour
         BoardManager.Instance.RegisterPiece(piece);
         return piece;
     }
-
 }
