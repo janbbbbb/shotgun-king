@@ -74,6 +74,7 @@ public class PlayerMovement : MonoBehaviour
 
                     // Aktualizujemy w BoardManagerze
                     BoardManager.Instance.UpdatePiecePosition(gameObject, newTarget);
+                    
 
 
                     // wywo³anie NextTurn tylko przy faktycznym ruchu

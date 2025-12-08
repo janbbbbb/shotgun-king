@@ -5,6 +5,7 @@ using UnityEngine;
 public class KnightMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public int turns = 2;
 
     private static readonly Vector3[] KnightOffsets = new Vector3[]
     {
@@ -30,11 +31,30 @@ public class KnightMovement : MonoBehaviour
 
     private void HandleTurnChange()
     {
-        if (GameManager.Instance.turnCounter % 2 != 0)
-            return;
         Vector3[] moves = GenerateMoves(KnightOffsets);
-        PrintMoves(moves);
+        GameObject player = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
 
+        // 1. Jeœli gracz istnieje, sprawdŸ czy koñ mo¿e go biæ NATYCHMIAST
+        if (player != null)
+        {
+            Vector3 playerPos = player.transform.position;
+
+            foreach (var move in moves)
+            {
+                if (Vector3.Distance(move, playerPos) < 0.1f)
+                {
+                    Debug.Log("KOÑ BIJE GRACZA NATYCHMIAST (szach-mat logika)");
+                    Move(move);
+                    return;
+                }
+            }
+        }
+
+        // 2. Jeœli nie by³o bicia ? normalna logika: ruch co X tur
+        if (GameManager.Instance.turnCounter % turns != 0)
+            return;
+
+        PrintMoves(moves);
         Vector3 selected = SelectMove(moves);
         Move(selected);
     }

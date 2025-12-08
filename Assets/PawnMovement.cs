@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PawnMovement : MonoBehaviour
 {
+    public int turns = 4;
     public float moveSpeed = 5f;
 
     // Ruchy pionka (+Z = do przodu)
@@ -27,9 +28,29 @@ public class PawnMovement : MonoBehaviour
 
     private void HandleTurnChange()
     {
-        if (GameManager.Instance.turnCounter % 2 != 0)
-            return;
         Vector3[] moves = GenerateMoves(PawnOffsets);
+
+        GameObject player = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
+        if (player != null)
+        {
+            Vector3 playerPos = player.transform.position;
+
+            // 1. Priorytet: bicie NATYCHMIAST
+            foreach (var move in moves)
+            {
+                if (Vector3.Distance(move, playerPos) < 0.1f)
+                {
+                    Debug.Log("PION BIJE GRACZA NATYCHMIAST (ignore turns)");
+                    Move(move);
+                    return;
+                }
+            }
+        }
+
+        // 2. Normalna logika: pionek rusza siê co X tur
+        if (GameManager.Instance.turnCounter % turns != 0)
+            return;
+
         PrintMoves(moves);
 
         Vector3 selected = SelectMove(moves);
@@ -59,7 +80,7 @@ public class PawnMovement : MonoBehaviour
                 continue;
             }
 
-            // podwójny ruch: pionek musi staæ na linii startu i oba pola musz¹ byæ wolne
+            // podwójny ruch
             if (i == 1)
             {
                 bool isOnStartRank = Mathf.RoundToInt(current.z) == -6;
@@ -74,7 +95,7 @@ public class PawnMovement : MonoBehaviour
                 continue;
             }
 
-            // bicie: tylko jeœli na polu stoi gracz
+            // bicie – tylko gracza
             if (i == 2 || i == 3)
             {
                 GameObject player = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
@@ -101,14 +122,9 @@ public class PawnMovement : MonoBehaviour
         {
             Vector3 offset = possibleMoves[i] - transform.position;
 
-            // zwyk³y ruch
-            if (offset == PawnOffsets[0]) points[i] = 1;
-
-            // podwójny ruch
-            else if (offset == PawnOffsets[1]) points[i] = 2;
-
-            // bicie
-            else if (offset == PawnOffsets[2] || offset == PawnOffsets[3]) points[i] = 3;
+            if (offset == PawnOffsets[0]) points[i] = 1;     // zwyk³y ruch
+            else if (offset == PawnOffsets[1]) points[i] = 2; // podwójny ruch
+            else if (offset == PawnOffsets[2] || offset == PawnOffsets[3]) points[i] = 3; // bicie
         }
 
         int bestIndex = 0;
@@ -123,7 +139,6 @@ public class PawnMovement : MonoBehaviour
 
     private void Move(Vector3 newPos)
     {
-        // Sprawdzenie, czy na polu jest gracz
         GameObject player = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
         if (player != null && Vector3.Distance(player.transform.position, newPos) < 0.1f)
         {
@@ -131,7 +146,6 @@ public class PawnMovement : MonoBehaviour
             Debug.Log("PION WYGRA£ – GRACZ ZOSTA£ ZABITY");
         }
 
-        // Ruch pionka
         transform.position = newPos;
         BoardManager.Instance.UpdatePiecePosition(gameObject, newPos);
     }

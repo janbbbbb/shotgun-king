@@ -5,6 +5,7 @@ using UnityEngine;
 public class QueenMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
+    public int turns = 2;
 
     private static readonly Vector3[] QueenOffsets = new Vector3[]
     {
@@ -48,9 +49,29 @@ public class QueenMovement : MonoBehaviour
 
     private void HandleTurnChange()
     {
-        if (GameManager.Instance.turnCounter % 2 != 0)
-            return;
         Vector3[] moves = GenerateMoves(QueenOffsets);
+
+        GameObject player = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
+        if (player != null)
+        {
+            Vector3 playerPos = player.transform.position;
+
+            // NATYCHMIASTOWE BICIE GRACZA
+            foreach (var move in moves)
+            {
+                if (Vector3.Distance(move, playerPos) < 0.1f)
+                {
+                    Debug.Log("KRÓLOWA BIJE GRACZA NATYCHMIAST (ignore turns)");
+                    Move(move);
+                    return;
+                }
+            }
+        }
+
+        // normalny ruch co X tur
+        if (GameManager.Instance.turnCounter % turns != 0)
+            return;
+
         Vector3 selected = SelectMove(moves);
         Move(selected);
     }
@@ -100,14 +121,19 @@ public class QueenMovement : MonoBehaviour
             float distance = Vector3.Distance(possibleMoves[i], playerPos);
             points[i] = -distance;
 
+            // priorytet na bicie
             if (Vector3.Distance(possibleMoves[i], playerPos) < 0.1f) points[i] += 100f;
 
+            // kara za bycie w rogu planszy
             Vector3 pos = possibleMoves[i];
             if (Mathf.Abs(pos.x) > 3f && Mathf.Abs(pos.z) > 3f) points[i] -= 1.5f;
         }
 
         int bestIndex = 0;
-        for (int i = 1; i < points.Length; i++) if (points[i] > points[bestIndex]) bestIndex = i;
+        for (int i = 1; i < points.Length; i++)
+            if (points[i] > points[bestIndex])
+                bestIndex = i;
+
         return possibleMoves[bestIndex];
     }
 
