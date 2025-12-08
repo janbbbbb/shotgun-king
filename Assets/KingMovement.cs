@@ -83,7 +83,6 @@ public class KingMovement : MonoBehaviour
     }
     private Vector3 SelectMove(Vector3[] possibleMoves)
     {
-        // pobranie obiektu gracza
         GameObject playerObject = BoardManager.Instance.GetPieceByName("playerPrefab(Clone)");
         if (playerObject == null)
         {
@@ -92,24 +91,30 @@ public class KingMovement : MonoBehaviour
         }
 
         Vector3 playerPosition = playerObject.transform.position;
-
-        int[] points = new int[possibleMoves.Length];
+        float[] points = new float[possibleMoves.Length];
 
         for (int i = 0; i < possibleMoves.Length; i++)
         {
             float distance = Vector3.Distance(possibleMoves[i], playerPosition);
 
-            // odejmujemy wartosc dystansu od punkt�w (bli�ej = lepiej)
-            points[i] = -Mathf.RoundToInt(distance);
+            // im dalej od gracza, tym lepiej
+            points[i] = -Mathf.Round(distance);
 
-            // sprawdzamy, czy ruch daje szacha przeciwnikowi
+            // bonus za ruch dający szacha
             if (IsCheck(possibleMoves[i]))
             {
-                points[i] += 5; // bonus za szach
+                points[i] += 5f;
+            }
+
+            // kara za bycie w rogu planszy
+            Vector3 pos = possibleMoves[i];
+            if (Mathf.Abs(pos.x) > 3f && Mathf.Abs(pos.z) > 3f)
+            {
+                points[i] -= 1.5f;
             }
         }
 
-        // wybieramy ruch z najwy�sz� punktacj�
+        // wybieramy ruch z najwyższą punktacją
         int bestIndex = 0;
         for (int i = 1; i < points.Length; i++)
         {
@@ -131,6 +136,8 @@ public class KingMovement : MonoBehaviour
     // ta funkcja zostanie wywo�ana automatycznie po ka�dej zmianie tury
     private void HandleTurnChange()
     {
+        if (GameManager.Instance.turnCounter % 2 != 0)
+            return;
         Vector3[] moves = GenerateMoves(KingOffsets);
         PrintMoves(moves);
         Debug.Log("Najlepszy ruch to:");

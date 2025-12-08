@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4237345786369064092}
   - component: {fileID: -7726835794238251239}
   - component: {fileID: -3357688510879691649}
+  - component: {fileID: -7362414422752654823}
   m_Layer: 3
   m_Name: knightPrefab
   m_TagString: Piece
@@ -162,3 +163,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 5
   hitAnimPrefab: {fileID: 8447344051945299319, guid: 2c9598994e420e14ba7bc663a0cbff34, type: 3}
+--- !u!114 &-7362414422752654823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3742600108308347728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d93d37c81e0c8041b62376a90ff94e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 5
