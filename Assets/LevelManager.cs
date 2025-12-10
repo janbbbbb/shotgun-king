@@ -228,6 +228,20 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    public void OnEnemyKilled(EnemyHealth enemy)
+    {
+        // Check if the killed enemy is the King
+        if (enemy.GetComponent<KingMovement>() != null)
+        {
+            Debug.Log("KING killed! Loading next level...");
+            NextLevel();
+            return;
+        }
+
+        // Otherwise normal enemy
+        aliveEnemies.Remove(enemy);
+    }
+
     private GameObject SpawnPiece(GameObject prefab, Vector2Int boardPos)
     {
         Vector3 worldPos = new Vector3(boardPos.x - 3.5f, 0, boardPos.y - 3.5f);

@@ -33,6 +33,8 @@ public class EnemyHealth : MonoBehaviour
         // Notify LevelManager
         OnDeath?.Invoke(this);
 
+        LevelManager.Instance.OnEnemyKilled(this);
+
         // Remove from board logic
         BoardManager.Instance.RemovePiece(gameObject);
 
@@ -47,7 +49,6 @@ public class EnemyHealth : MonoBehaviour
         // Start fade-out
         StartCoroutine(FadeAndDestroy());
     }
-
 
     private IEnumerator FadeAndDestroy()
     {
