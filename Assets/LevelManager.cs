@@ -16,6 +16,7 @@ public class LevelManager : MonoBehaviour
 
     private int currentLevel = 1;
     private const int maxLevel = 12;
+    private bool levelEnding = false;
 
     // Track enemies alive in this level
     private List<EnemyHealth> aliveEnemies = new List<EnemyHealth>();
@@ -50,7 +51,9 @@ public class LevelManager : MonoBehaviour
     {
         Debug.Log($"=== Loading Level {levelIndex} ===");
 
-        // Clear lists
+        levelEnding = false;
+
+        // Clear list
         aliveEnemies.Clear();
 
         // Clear board
@@ -102,7 +105,6 @@ public class LevelManager : MonoBehaviour
                 SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
                 SpawnEnemy(knightPrefab, new Vector2Int(5, 1));
                 SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
-                SpawnEnemy(pawnPrefab, new Vector2Int(2, 1));
                 SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
                 SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
                 SpawnPlayer(new Vector2Int(4, 7));
@@ -113,6 +115,7 @@ public class LevelManager : MonoBehaviour
                 SpawnEnemy(queenPrefab, new Vector2Int(3, 0));
                 SpawnEnemy(bishopPrefab, new Vector2Int(2, 1));
                 SpawnEnemy(bishopPrefab, new Vector2Int(5, 1));
+                SpawnEnemy(rookPrefab, new Vector2Int(0, 0));
                 SpawnEnemy(pawnPrefab, new Vector2Int(3, 1));
                 SpawnEnemy(pawnPrefab, new Vector2Int(4, 1));
                 SpawnEnemy(pawnPrefab, new Vector2Int(5, 2));
@@ -203,9 +206,9 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void SpawnPlayer(Vector2Int pos)
-    {
-        SpawnPiece(playerPrefab, pos);
+    private void SpawnPlayer(Vector2Int pos) 
+    { 
+        SpawnPiece(playerPrefab, pos); 
     }
 
     private void SpawnEnemy(GameObject prefab, Vector2Int pos)
@@ -216,31 +219,28 @@ public class LevelManager : MonoBehaviour
         if (eh != null)
         {
             aliveEnemies.Add(eh);
-
-            // Correct signature: (EnemyHealth enemy)
-            eh.OnDeath += (enemy) =>
-            {
-                aliveEnemies.Remove(enemy);
-
-                if (aliveEnemies.Count == 0)
-                    NextLevel();
-            };
+            eh.OnDeath += HandleEnemyDeath;
         }
     }
 
-    public void OnEnemyKilled(EnemyHealth enemy)
+
+    private void HandleEnemyDeath(EnemyHealth enemy)
     {
-        // Check if the killed enemy is the King
-        if (enemy.GetComponent<KingMovement>() != null)
+        if (levelEnding) return;
+
+        aliveEnemies.Remove(enemy);
+
+        bool isKing = enemy.GetComponent<KingMovement>() != null;
+
+        if (isKing)
         {
-            Debug.Log("KING killed! Loading next level...");
+            Debug.Log("KING DEAD → NEXT LEVEL");
+            levelEnding = true;
             NextLevel();
             return;
         }
-
-        // Otherwise normal enemy
-        aliveEnemies.Remove(enemy);
     }
+
 
     private GameObject SpawnPiece(GameObject prefab, Vector2Int boardPos)
     {
